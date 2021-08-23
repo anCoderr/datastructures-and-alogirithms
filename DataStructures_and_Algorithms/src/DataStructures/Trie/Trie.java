@@ -1,10 +1,10 @@
-// Basic Implementation of a Trie.
+package DataStructures.Trie;// Basic Implementation of a DataStructures.Trie.Trie.
 
 /*
     This is basically what a tree(...!oops I meant TRIE) looks like.
                              --------------------------
                           This right here is important..!!
-                          ==> Trie and Tree are different
+                          ==> DataStructures.Trie.Trie and DataStructures.Trees.Tree are different
 
             root
           /  |  \
@@ -32,14 +32,14 @@
     store words(or Strings), and you are right for the most part. This sort of DS can be very helpful to
     store lots of words. However if we ever need to search the entire trie for any suffix that would be
     really problematic. This is because this DS can find if a specific String/Word is present in the
-    Trie fairly quickly(O(n) time to be accurate), searching for something whose starting points are not
+    DataStructures.Trie.Trie fairly quickly(O(n) time to be accurate), searching for something whose starting points are not
     known can be a real problem as it quite literally could be "ANYWHERE" in the graph if we have a
-    Trie big enough. Searching for prefix would be easy. That is why we try to avoid situations where
-    we need to check for suffix. Notice I said Graph and at some point I also called it a Tree.
-    This is because Tree is a specific sort of Graph. Trie is a special sort of Tree hence it is also a Graph.
+    DataStructures.Trie.Trie big enough. Searching for prefix would be easy. That is why we try to avoid situations where
+    we need to check for suffix. Notice I said DataStructures.Graphs.Graph and at some point I also called it a DataStructures.Trees.Tree.
+    This is because DataStructures.Trees.Tree is a specific sort of DataStructures.Graphs.Graph. DataStructures.Trie.Trie is a special sort of DataStructures.Trees.Tree hence it is also a DataStructures.Graphs.Graph.
 
-    NOTE => Graph is a really important DS as a lot of DS are just special cases of Graph
-            For Eg, Linked List, Tree, BST, Trie are all Graphs with some strict rules and boundations.
+    NOTE => DataStructures.Graphs.Graph is a really important DS as a lot of DS are just special cases of DataStructures.Graphs.Graph
+            For Eg, Linked List, DataStructures.Trees.Tree, BST, DataStructures.Trie.Trie are all Graphs with some strict rules and boundations.
 
     By now you might have realized why this DS is very good for storing strings/words, if not dont worry
     read the following :
@@ -65,9 +65,24 @@
 
  */
 
-
-
 public class Trie {
+
+    static class Runner {
+        public static void main(String[] args) {
+            Trie trie = new Trie(26);
+            trie.addWord("apple");
+            trie.addWord("apollo");
+            trie.addWord("base");
+            trie.addWord("basement");
+            trie.addWord("zomba");
+            System.out.println(trie.search("apple"));
+            System.out.println(trie.search("apollo"));
+            System.out.println(trie.search("base"));
+            System.out.println(trie.search("basement"));
+            System.out.println(trie.search("zomba"));
+        }
+    }
+
     // setSize is size of input set(eg, 26 for all small english letters)
     int setSize;
     // root is the root node
@@ -101,34 +116,5 @@ public class Trie {
     }
 }
 
-class TrieNode {
-    // int size is size of input set(eg, 26 for all small english letters).
-    int size;
-    // EOW sequence that defines if the current node is the end of a word or not.
-    boolean isEndOfWord;
-    // children array keeps track of which character is current node connected to.
-    TrieNode[] children;
-    public TrieNode(int size, boolean end) {
-        this.size = size;
-        // EOW is false as we just created the current node.
-        isEndOfWord = end;
-        // This initialization just keeps all indexes of children as null values.
-        children = new TrieNode[size];
-    }
-}
 
-class TrieRunner {
-    public static void main(String[] args) {
-        Trie trie = new Trie(26);
-        trie.addWord("apple");
-        trie.addWord("apollo");
-        trie.addWord("base");
-        trie.addWord("basement");
-        trie.addWord("zomba");
-        System.out.println(trie.search("apple"));
-        System.out.println(trie.search("apollo"));
-        System.out.println(trie.search("base"));
-        System.out.println(trie.search("basement"));
-        System.out.println(trie.search("zomba"));
-    }
-}
+

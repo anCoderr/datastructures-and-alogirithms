@@ -1,11 +1,12 @@
-
+package DataStructures.DisjointSets;
 // Simple Implementation of Disjoint Sets --------------------
 
 // Time Complexity for Find = O(n) and Union = O(n) for Worst Case
 
-class DisjointSetSimple {
+// Disjoint Sets Naive
+class DisjointSetNaive {
     int[] parent;
-    public DisjointSetSimple(int size) {
+    public DisjointSetNaive(int size) {
         parent = new int[size];
         for(int i = 0; i<size; i++)
             parent[i] = i;
@@ -37,6 +38,7 @@ class DisjointSetSimple {
     that keeps track of the rank of each set.
  */
 
+// Disjoint Sets using UNION BY RANK
 class DisjointSetUnionByRank {
     int[] parent, rank;
     public DisjointSetUnionByRank(int size) {
@@ -90,6 +92,7 @@ class DisjointSetUnionByRank {
     complexity for further calls.
  */
 
+// Disjoint Sets using UNION BY RANK and PATH COMPRESSION
 public class DisjointSets {
     int[] parent, rank;
     public DisjointSets(int size) {
