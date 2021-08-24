@@ -15,11 +15,13 @@ package DataStructures.Trie;// Basic Implementation of a DataStructures.Trie.Tri
       / \  |   \    \
    ->D  I  P   N    M
        /  / \   \   |
-      O  L  O   E   E<-
+      O  L  A   E   E<-
      /   |  |   |    \
-  ->S  ->E  L ->Y     L-E-S-S<-
+  ->S  ->E  R ->Y     L-E-S-S<-
             |
-          ->O
+            E
+           /
+        ->L
 
     NOTE => The multiple arrow heads (-> , <-) are essentially Word End specifiers.
             Eg, NAME in itself is a word but NAMELESS can be made by extending nodes
@@ -63,21 +65,28 @@ package DataStructures.Trie;// Basic Implementation of a DataStructures.Trie.Tri
 
  */
 
+import Exceptions.ExceptionsGenerator;
+
 public class Trie {
 
     static class Runner {
-        public static void main(String[] args) {
+        public static void main(String[] args) throws Exception {
             Trie trie = new Trie(26);
             trie.addWord("apple");
             trie.addWord("apollo");
+            trie.addWord("apparel");
             trie.addWord("base");
             trie.addWord("basement");
             trie.addWord("zomba");
             System.out.println(trie.search("apple"));
             System.out.println(trie.search("apollo"));
+            System.out.println(trie.search("apparel"));
             System.out.println(trie.search("base"));
             System.out.println(trie.search("basement"));
             System.out.println(trie.search("zomba"));
+            trie.deleteWord("apollo");
+            System.out.println(trie.search("apollo"));
+
         }
     }
 
@@ -89,7 +98,9 @@ public class Trie {
         this.setSize = setSize;
         root = new TrieNode(this.setSize, false);
     }
-    public void addWord(String word) {
+    public void addWord(String word) throws Exception{
+        if(search(word))
+            throw new ExceptionsGenerator("Illegal Argument Exception.\nError Message : The given word is already exists");
         TrieNode current = root;
         int index;
         for(int i = 0; i<word.length(); i++) {
@@ -111,6 +122,17 @@ public class Trie {
 
         }
         return current.isEndOfWord;
+    }
+    public void deleteWord(String word) throws Exception {
+        TrieNode current = root;
+        int index;
+        for(int i = 0; i<word.length(); i++) {
+            index = word.charAt(i) - 'a';
+            if(current.children[index] == null)
+                throw new ExceptionsGenerator("Illegal Argument Exception.\nError Message : The given word is doesn't exist exists");
+            current = current.children[index];
+        }
+        current.isEndOfWord = false;
     }
 }
 
