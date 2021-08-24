@@ -5,7 +5,6 @@ import DataStructures.DisjointSets.DisjointSets;
 import java.util.*;
 
 class Graph {
-
     // Runner class
     static class Runner {
         public static void main(String[] args) {
@@ -286,7 +285,7 @@ class Graph {
     public ArrayList<Edge> edgeList;
 
     public Graph(int v) {
-        adj = new ArrayList[v];
+        adj = (ArrayList<Edge>[]) new ArrayList[v];
         edgeList = new ArrayList<>();
         for(int i = 0; i<v; i++)
             adj[i] = new ArrayList<>();
@@ -369,7 +368,7 @@ class Graph {
 
     public void BFS_traversal(int s) {
         boolean[] visited = new boolean[v];
-        LinkedList<Integer> queue = new LinkedList<Integer>();
+        LinkedList<Integer> queue = new LinkedList<>();
         visited[s] = true;
         queue.add(s);
         int curr;
@@ -387,7 +386,7 @@ class Graph {
 
     public boolean BFS_search(int s, int t) {
         boolean[] visited = new boolean[v];
-        LinkedList<Integer> queue = new LinkedList<Integer>();
+        LinkedList<Integer> queue = new LinkedList<>();
         visited[s] = true;
         queue.add(s);
         int curr;
@@ -764,7 +763,6 @@ class Graph {
         int weightedSum = 0, index = 0, f, t;
         ArrayList<Edge> sortedEdgeList = new ArrayList<>();
         Graph mst = new Graph(v);
-        boolean skip = false;
         for(Edge e : this.edgeList)
             sortedEdgeList.add(new Edge(e));
         DisjointSets ds = new DisjointSets(v);

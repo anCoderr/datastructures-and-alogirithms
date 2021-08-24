@@ -2,7 +2,7 @@ package DataStructures.Heaps;
 
 import java.util.ArrayList;
 
-public class MaxHeap {
+public class MaxHeap implements Heap{
 
     static class Runner {
         public static void main(String[] args) {
