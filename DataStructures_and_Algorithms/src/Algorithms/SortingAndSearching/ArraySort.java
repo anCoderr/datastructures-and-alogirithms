@@ -8,12 +8,14 @@ import java.util.Arrays;
 public class ArraySort {
     static class Runner {
         public static void main(String[] args) {
-            int[] arr = new int[] {7,6,1,2,3,8,9,0,4,5};
+//            int[] arr = new int[] {7,6,1,2,3,8,9,0,4,5};
+            int[] arr = new int[] {3,3,3,3,2,2,1,1,3,2,0,0,8,7,8,6,9,9};
 //            selectionSort(arr);
 //            bubbleSort(arr);
 //            insertionSort(arr);
 //            heapSort(arr);
-            quickSort(arr);
+//            quickSort(arr);
+            mergeSort(arr);
             System.out.println(Arrays.toString(arr));
         }
     }
@@ -87,5 +89,32 @@ public class ArraySort {
         pivot = r;
         quickSort(arr, left, pivot-1);
         quickSort(arr, pivot+1, right);
+    }
+
+    public static void mergeSort(int[] arr) {
+        mergeSort(arr, new int[arr.length], 0, arr.length-1);
+    }
+    public static void mergeSort(int[] arr, int[] temp, int left, int right) {
+        if(left >= right)
+            return;
+        int mid = (left+right)/2;
+        mergeSort(arr, temp, left, mid);
+        mergeSort(arr, temp, mid+1, right);
+        mergeArrays(arr, temp, left, right);
+    }
+    public static void mergeArrays(int[] arr, int[] temp, int left, int right) {
+        int mid = (left+right)/2, l = left, r = mid+1, index = left, size = right-left+1;
+        while(l <= mid && r <= right) {
+            if(arr[l] <= arr[r])
+                temp[index++] = arr[l++];
+            else
+                temp[index++] = arr[r++];
+        }
+        while(l <= mid)
+            temp[index++] = arr[l++];
+        while(r <= mid+1)
+            temp[index++] = arr[r++];
+        while(size-- > 0)
+            arr[left] = temp[left++];
     }
 }
