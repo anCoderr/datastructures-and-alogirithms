@@ -4,7 +4,8 @@ package DataStructures.Trie;// Basic Implementation of a DataStructures.Trie.Tri
     This is basically what a tree(...!oops I meant TRIE) looks like.
                              --------------------------
                           This right here is important..!!
-                          ==> DataStructures.Trie.Trie and DataStructures.Trees.Tree are different
+                          ==> Trie and Tree are different
+                          (Trie is a special form of Tree)
 
             root
           /  |  \
@@ -29,39 +30,36 @@ package DataStructures.Trie;// Basic Implementation of a DataStructures.Trie.Tri
     n ------> Size of word/String
 
     One thing that you might have noticed right of the bat is that this seems like a very optimal way to
-    store words(or Strings), and you are right for the most part. This sort of DS can be very helpful to
+    store words(or Strings), and you are right for the most part. This sort of tree can be very helpful to
     store lots of words. However if we ever need to search the entire trie for any suffix that would be
-    really problematic. This is because this DS can find if a specific String/Word is present in the
-    DataStructures.Trie.Trie fairly quickly(O(n) time to be accurate), searching for something whose starting points are not
-    known can be a real problem as it quite literally could be "ANYWHERE" in the graph if we have a
-    DataStructures.Trie.Trie big enough. Searching for prefix would be easy. That is why we try to avoid situations where
-    we need to check for suffix. Notice I said DataStructures.Graphs.Graph and at some point I also called it a DataStructures.Trees.Tree.
-    This is because DataStructures.Trees.Tree is a specific sort of DataStructures.Graphs.Graph. DataStructures.Trie.Trie is a special sort of DataStructures.Trees.Tree hence it is also a DataStructures.Graphs.Graph.
+    really problematic. This is because searching for something whose starting points are not known could
+    be quite literally could be "ANYWHERE" in the Trie. Searching for prefix would be easy. That is why we
+    try to avoid situations where we need to check for suffix. Notice I said Graph and at some point I also
+    called it a Tree. This is because Tree is a specific sort of Graph. Trie is a special sort of Tree hence
+    it is also a Graph.
 
-    NOTE => DataStructures.Graphs.Graph is a really important DS as a lot of DS are just special cases of DataStructures.Graphs.Graph
-            For Eg, Linked List, DataStructures.Trees.Tree, BST, DataStructures.Trie.Trie are all Graphs with some strict rules and boundations.
+    NOTE => Graph is a really important DS as a lot of DS are just special cases of Graph
+            For Eg, Linked List, Tree, BST, Trie are all Graphs with some strict rules and boundations.
 
     By now you might have realized why this DS is very good for storing strings/words, if not dont worry
     read the following :
 
-    Essentially the problem was that with normal DS that we could have used for this problem
+    Essentially the problem was that with any normal Data Structure that we could have used for this problem
     Eg, arrays, tree, lists, etc we had to store a lot of redundant data as each word/string was a different
     entity in itself. Our goal is to look for common links between these different values so as to use these
     common links as some sort of optimizations for this problem. One can easily realize that a Word
-    is just a arrangement of some characters(just 26 of em..!!). This is it!! we found the common link.
+    is just a arrangement of some characters(just 26 of em..!!).
 
     Lets take an example, just look at NAME and NAMELESS, these 2 words have a common part i.e "NAME"
-    but storing them as different entities we are storing NAME redundantly. What can we do??? Then we thought
-    of an obvious solution to the problem. Just Consider NAME and LESS as 2 different nodes and connect the
-    two. To check if a specific sequence of such nodes is an inserted word or not, we can assign each node
-    with a boolean property i.e EOW(end of word) sequence. To take this scenario a bit further consider 3
-    numbers NAME, NAMELESS, NAMEPLATE, NAMELESSNESS. Here NAME can be common node for all 4 words and
-    NAMELESS can be common node for 2 words. We realized that since the character set is limited,
-    why on Earth are we even considering to store common substrings as nodes(as computing common nodes
-    within a vast array of words in itself a difficult task). Take this common node approach a bit
-    further and apply this principle to each and every single character. Rather than storing common
-    substrings we store all character as different nodes, each with its own EOW sequence and subsequent
-    character array to keep record of which character is the current character attached to.
+    but storing them as different entities we are storing "NAME" redundantly. Just Consider NAME and LESS
+    as 2 different nodes and connect the two. To check if a specific sequence of such nodes is an inserted
+    word or not, we can assign each node with a boolean property i.e EOW(end of word) sequence. To take
+    this scenario a bit further consider 3 numbers NAME, NAMELESS, NAMEPLATE, NAMELESSNESS. Here NAME can
+    be common node for all 4 words and NAMELESS can be common node for 2 words. We realized that since the
+    character set is limited, taking this common node approach a bit further and apply this principle to each
+    and every single character. Rather than storing common substrings we store all character as different
+    nodes, each with its own EOW sequence and subsequent character array to keep record of which character
+    is the current character attached to.
 
  */
 
