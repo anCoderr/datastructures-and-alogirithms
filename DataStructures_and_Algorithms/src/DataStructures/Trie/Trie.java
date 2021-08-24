@@ -85,8 +85,9 @@ public class Trie {
             System.out.println(trie.search("basement"));
             System.out.println(trie.search("zomba"));
             trie.deleteWord("apollo");
+            trie.deleteWord("zomba");
+            System.out.println(trie.search("zomba"));
             System.out.println(trie.search("apollo"));
-
         }
     }
 

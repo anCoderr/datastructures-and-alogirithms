@@ -160,7 +160,7 @@ class Graph {
             dirGraphWeighted.topologicalSort_DFS();
             System.out.println("Directed Unweighted DataStructures.Graphs.Graph Topological Sort with BFS");
             dirGraphUnweighted.topologicalSorting_BFS();
-            System.out.println("Directed Unwighted DataStructures.Graphs.Graph Topological Sort with DFS Stack Kahn's Algorithm");
+            System.out.println("Directed Unweighted DataStructures.Graphs.Graph Topological Sort with DFS Stack Kahn's Algorithm");
             dirGraphUnweighted.topologicalSorting_DFS_KhansAlgo();
             System.out.println("Directed Weighted DataStructures.Graphs.Graph Topological Sort with BFS");
             dirGraphWeighted.topologicalSorting_BFS();
@@ -960,7 +960,7 @@ class Graph {
         for(Edge edge : adj[current])
             if(!visited[edge.target]) {
                 counter++;
-//                children[current]++;
+                children[current]++;
                 time = discoveryTimes(edge.target, time+1, discoveryTimes, visited, children);
             }
         children[current] = counter;
