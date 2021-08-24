@@ -89,13 +89,12 @@ public class MinHeap implements Heap{
     public void heapifyDown() {
         int index = 0, smaller;
         while(hasLeftChildIndex(index)) {
-            smaller = getLeftChild(index);
-            if(hasRightChildIndex(index) && smaller >= getRightChild(index))
+            smaller = getLeftChildIndex(index);
+            if(hasRightChildIndex(index) && getLeftChild(index) > getRightChild(index))
                 smaller =  getRightChildIndex(index);
             if(heap.get(index) < heap.get(smaller))
                 break;
-            else
-                swapElements(index, smaller);
+            swapElements(index, smaller);
             index = smaller;
         }
     }

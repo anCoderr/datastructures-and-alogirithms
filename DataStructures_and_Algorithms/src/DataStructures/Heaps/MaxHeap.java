@@ -14,6 +14,8 @@ public class MaxHeap implements Heap{
             maxHeap.add(8);
             maxHeap.add(2);
             System.out.println(maxHeap.poll());
+            System.out.println(maxHeap.poll());
+            System.out.println(maxHeap.poll());
             System.out.println(maxHeap.peek());
         }
     }
@@ -67,6 +69,7 @@ public class MaxHeap implements Heap{
     public int poll() {
         int temp = heap.get(0);
         heap.set(0, heap.get(size-1));
+        heap.remove(size-1);
         size--;
         heapifyDown();
         return temp;
@@ -87,16 +90,15 @@ public class MaxHeap implements Heap{
     }
 
     public void heapifyDown() {
-        int index = 0, smaller;
+        int index = 0, larger;
         while(hasLeftChildIndex(index)) {
-            smaller = getLeftChild(index);
-            if(hasRightChildIndex(index) && smaller < getRightChild(index))
-                smaller =  getRightChildIndex(index);
-            if(heap.get(index) < heap.get(smaller))
+            larger = getLeftChildIndex(index);
+            if(hasRightChildIndex(index) && getLeftChild(index) < getRightChild(index))
+                larger =  getRightChildIndex(index);
+            if(heap.get(index) > heap.get(larger))
                 break;
-            else
-                swapElements(index, smaller);
-            index = smaller;
+            swapElements(index, larger);
+            index = larger;
         }
     }
 }

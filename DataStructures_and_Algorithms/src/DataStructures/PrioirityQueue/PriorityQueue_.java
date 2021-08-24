@@ -11,9 +11,10 @@ public class PriorityQueue_ {
     static String UNDERFLOW_ERROR_MSG = "Priority Queue underflow error.\n";
     // Runner class for testing
     public static class Runner {
-        public static void main(String[] args) {
+        public static void main(String[] args) throws Exception {
             /* The default priority queue implementation in JAVA
                It uses MinHeap by default if comparator is not specified */
+            System.out.println("Default Minimum Priority Queue Implementation in JAVA");
             PriorityQueue<Integer> pqMinHeap = new PriorityQueue<>();
             pqMinHeap.add(89);
             pqMinHeap.add(12);
@@ -26,9 +27,11 @@ public class PriorityQueue_ {
             System.out.println(pqMinHeap.poll());
             System.out.println(pqMinHeap.poll());
             System.out.println(pqMinHeap.poll());
+
             /* Collections.reverseOrder() is a descending order comparator
                provided by the Collections class. So our priority queue
                not uses MaxHeap for ordering */
+            System.out.println("Default Maximum Priority Queue Implementation in JAVA");
             PriorityQueue<Integer> pqMaxHeap = new PriorityQueue<>(Collections.reverseOrder());
             pqMaxHeap.add(87);
             pqMaxHeap.add(11);
@@ -44,6 +47,31 @@ public class PriorityQueue_ {
             System.out.println(pqMaxHeap.poll());
             System.out.println(pqMaxHeap.poll());
             System.out.println(pqMaxHeap.poll());
+
+            System.out.println("Our Implementation of Min Priority Queue in JAVA");
+            PriorityQueue_ pqMin = new PriorityQueue_(true);
+
+            pqMin.enQueue(3);
+            pqMin.enQueue(0);
+            pqMin.enQueue(1);
+            pqMin.enQueue(4);
+            pqMin.enQueue(5);
+            pqMin.enQueue(2);
+            System.out.println(pqMin.deQueue());
+            System.out.println(pqMin.deQueue());
+            System.out.println(pqMin.peek());
+
+            System.out.println("Our Implementation of Max Priority Queue in JAVA");
+            PriorityQueue_ pqMax = new PriorityQueue_(false);
+            pqMax.enQueue(0);
+            pqMax.enQueue(1);
+            pqMax.enQueue(2);
+            pqMax.enQueue(3);
+            pqMax.enQueue(4);
+            pqMax.enQueue(5);
+            System.out.println(pqMax.deQueue());
+            System.out.println(pqMax.deQueue());
+            System.out.println(pqMax.peek());
         }
     }
 
@@ -63,17 +91,17 @@ public class PriorityQueue_ {
         size++;
     }
 
-    public int deQueue(int val) throws Exception {
+    public int deQueue() throws Exception {
         if(size == 0)
             throw new ExceptionsGenerator(UNDERFLOW_ERROR_MSG + "Error Message: The priority queue is empty. Cannot poll() from an empty priority queue");
         size--;
         return pq.poll();
     }
 
-    public void peek(int val) throws Exception {
+    public int peek() throws Exception {
         if(size == 0)
             throw new ExceptionsGenerator(UNDERFLOW_ERROR_MSG + "Error Message: The priority queue is empty. Cannot peek() at an empty priority queue");
-        pq.peek();
+        return pq.peek();
     }
 
     public int size() {
