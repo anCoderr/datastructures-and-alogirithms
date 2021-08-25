@@ -5,7 +5,7 @@ import java.util.LinkedList;
 public class HashSet_ extends HashFunction{
     static class Runner {
         public static void main(String[] args) {
-            HashSet_ hashSet = new HashSet_(20, 5);
+            HashSet_ hashSet = new HashSet_(5);
             hashSet.insert(10);
             hashSet.insert(12);
             hashSet.insert(7);
@@ -31,20 +31,47 @@ public class HashSet_ extends HashFunction{
             hashSet.delete(14);
             System.out.println(hashSet.contains(14));
             hashSet.printSet();
+            hashSet.insert(22);
+            hashSet.insert(20);
+            hashSet.insert(23);
+            hashSet.insert(25);
+            hashSet.insert(28);
+            hashSet.insert(24);
+            hashSet.insert(21);
+            hashSet.insert(26);
+            hashSet.insert(23);
+            hashSet.insert(27);
+            hashSet.insert(29);
+            hashSet.insert(30);
             hashSet.printSetCompact();
         }
     }
+
     LinkedList<Integer>[] buckets;
-    int maxSize, hSize;
-    public HashSet_ (int maxSize, int hSize) {
+    int hSize, size;
+
+    public HashSet_ (int hSize) {
         this.hSize = hSize;
-        this.maxSize = maxSize;
-        buckets = new LinkedList[maxSize];
-        for(int i = 0; i<maxSize; i++)
+        size = 0;
+        buckets = new LinkedList[hSize];
+        for(int i = 0; i<hSize; i++)
             buckets[i] = new LinkedList<>();
     }
 
+    public void handleOverflow() {
+        HashSet_ newHashSet = new HashSet_(2*hSize);
+        for(int i = 0; i<hSize; i++) {
+            for(int j : buckets[i])
+                newHashSet.insert(j);
+        }
+        buckets = newHashSet.buckets;
+        hSize *= 2;
+    }
+
     public void insert(int val) {
+        size++;
+        if(size >= 5*hSize)
+            handleOverflow();
         int hash = hashFunction(val, hSize);
         if(searchAt(val, hash))
             return;
@@ -63,6 +90,7 @@ public class HashSet_ extends HashFunction{
     }
 
     public boolean delete(int val) {
+        size = Math.max(size-1, 0);
         int hash = hashFunction(val, hSize);
         if(!searchAt(val, hash))
             return false;
@@ -71,7 +99,7 @@ public class HashSet_ extends HashFunction{
     }
 
     public void printSet() {
-        for(int i = 0; i<maxSize; i++) {
+        for(int i = 0; i<hSize; i++) {
             System.out.print("For hash " + i + " : --> ");
             for(int j : buckets[i])
                 System.out.print(j + " -> ");
@@ -79,7 +107,7 @@ public class HashSet_ extends HashFunction{
         }
     }
     public void printSetCompact() {
-        for(int i = 0; i<maxSize; i++) {
+        for(int i = 0; i<hSize; i++) {
             if(buckets[i].size() != 0)
                 System.out.print("For hash " + i + " : --> ");
             for(int j : buckets[i])
