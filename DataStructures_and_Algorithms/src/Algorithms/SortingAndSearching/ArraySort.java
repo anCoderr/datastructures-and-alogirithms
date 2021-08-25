@@ -8,14 +8,13 @@ import java.util.Arrays;
 public class ArraySort {
     static class Runner {
         public static void main(String[] args) {
-//            int[] arr = new int[] {7,6,1,2,3,8,9,0,4,5};
-            int[] arr = new int[] {3,3,3,3,2,2,1,1,3,2,0,0,8,7,8,6,9,9};
+            int[] arr = new int[] {7,0,0,6,1,2,3,8,9,3,0,4,1,5};
 //            selectionSort(arr);
 //            bubbleSort(arr);
 //            insertionSort(arr);
 //            heapSort(arr);
-//            quickSort(arr);
-            mergeSort(arr);
+            quickSort(arr);
+//            mergeSort(arr);
             System.out.println(Arrays.toString(arr));
         }
     }

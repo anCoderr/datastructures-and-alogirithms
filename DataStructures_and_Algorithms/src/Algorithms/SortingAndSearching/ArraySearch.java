@@ -1,6 +1,22 @@
 package Algorithms.SortingAndSearching;
 
 public class ArraySearch {
+    public static class Runner {
+        public static void main(String[] args) {
+            int[] arr = new int[]{0,1,4,8,9,11,15,18,19,20,22,25,26,29,30,31,39,43,47,51};
+            System.out.println(linearSearch(arr, 15));
+            System.out.println(linearSearch(arr, 17));
+            System.out.println(binarySearch(arr, 15));
+            System.out.println(binarySearch(arr, 17));
+            System.out.println(exponentialSearch(arr, 15));
+            System.out.println(exponentialSearch(arr, 17));
+            System.out.println(jumpSearch(arr, 15));
+            System.out.println(jumpSearch(arr, 17));
+            arr = new int[]{0,1,2,3,4,5,6,7,8,9};
+            System.out.println(interpolationSearch(arr, 7));
+            System.out.println(interpolationSearch(arr, 10));
+        }
+    }
     public static boolean linearSearch(int[] arr, int target) {
         for(int i : arr)
             if(i == target)
@@ -9,14 +25,14 @@ public class ArraySearch {
     }
     public static boolean binarySearch(int[] arr, int target) {
         int left = 0, right = arr.length-1, mid;
-        while(left < right) {
+        while(left <= right) {
             mid = (left+right)/2;
             if(arr[mid] == target)
                 return true;
-            else if(arr[mid] > target)
-                left = mid;
+            else if(target > arr[mid])
+                left = mid+1;
             else
-                right = mid;
+                right = mid-1;
         }
         return false;
     }
@@ -26,22 +42,24 @@ public class ArraySearch {
             mid = (left+right)/2;
             if(arr[mid] == target)
                 return true;
-            else if(arr[mid] > target)
-                left = mid-1;
+            else if(target > arr[mid])
+                left = mid+1;
             else
-                right = mid+1;
+                right = mid-1;
         }
         return false;
     }
     public static boolean jumpSearch(int[] arr, int target) {
-        int size = arr.length, jump = size/100, start = 0, end = jump;
+        int size = arr.length, jump = Math.max(size/100, 1), start = 0, end = jump;
         while(end < size)
         {
             end = Math.min((start + jump), size-1);
-            if(target <= arr[end])
-                for(int i = start; i<=end; i++)
-                    if(arr[i] == target)
+            if(target <= arr[end]) {
+                for (int i = start; i <= end; i++)
+                    if (arr[i] == target)
                         return true;
+                return false;
+            }
             start = end+1;
         }
         return false;
