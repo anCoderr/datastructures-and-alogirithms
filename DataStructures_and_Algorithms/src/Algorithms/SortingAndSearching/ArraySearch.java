@@ -1,7 +1,7 @@
 package Algorithms.SortingAndSearching;
 
 public class ArraySearch {
-    public static class Runner {
+    static class Runner {
         public static void main(String[] args) {
             int[] arr = new int[]{0,1,4,8,9,11,15,18,19,20,22,25,26,29,30,31,39,43,47,51};
             System.out.println(linearSearch(arr, 15));
@@ -17,6 +17,7 @@ public class ArraySearch {
             System.out.println(interpolationSearch(arr, 10));
         }
     }
+
     public static boolean linearSearch(int[] arr, int target) {
         for(int i : arr)
             if(i == target)
