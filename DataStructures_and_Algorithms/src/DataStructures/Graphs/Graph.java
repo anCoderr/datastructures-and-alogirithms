@@ -155,17 +155,17 @@ class Graph {
             /* Find topological sort of all types of graphs ---------- */
             System.out.println("Topological sort for Directed Acyclic Graphs");
             System.out.println("Directed Unweighted DataStructures.Graphs.Graph Topological Sort with DFS");
-            dirGraphUnweighted.topologicalSort_DFS();
+            dirGraphUnweighted.topologicalSort_DFS_Recursion();
             System.out.println("Directed Weighted DataStructures.Graphs.Graph Topological Sort with DFS");
-            dirGraphWeighted.topologicalSort_DFS();
+            dirGraphWeighted.topologicalSort_DFS_Recursion();
             System.out.println("Directed Unweighted DataStructures.Graphs.Graph Topological Sort with BFS");
             dirGraphUnweighted.topologicalSorting_BFS();
             System.out.println("Directed Unweighted DataStructures.Graphs.Graph Topological Sort with DFS Stack Kahn's Algorithm");
-            dirGraphUnweighted.topologicalSorting_DFS_KhansAlgo();
+            dirGraphUnweighted.topologicalSorting_DFS_Stack_KhansAlgo();
             System.out.println("Directed Weighted DataStructures.Graphs.Graph Topological Sort with BFS");
             dirGraphWeighted.topologicalSorting_BFS();
             System.out.println("Directed Weighted DataStructures.Graphs.Graph Topological Sort with DFS Stack Kahn's Algorithm");
-            dirGraphWeighted.topologicalSorting_DFS_KhansAlgo();
+            dirGraphWeighted.topologicalSorting_DFS_Stack_KhansAlgo();
 
             /* ---------------------------------------- CYCLE DETECTION ---------------------------------------- */
             /* Cycle detection all types of graphs ---------- */
@@ -654,7 +654,7 @@ class Graph {
         System.out.print("DONE!!\n");
         return order;
     }
-    public int[] topologicalSorting_DFS_KhansAlgo() {
+    public int[] topologicalSorting_DFS_Stack_KhansAlgo() {
         Stack<Integer> stack = new Stack<>();
         int[] order = new int[v];
         int[] indegree = new int[v];
@@ -681,7 +681,7 @@ class Graph {
         return order;
     }
 
-    public int[] topologicalSort_DFS() {
+    public int[] topologicalSort_DFS_Recursion() {
         int[] order = new int[v];
         boolean[] visited = new boolean[v];
         Stack<Integer> topoSort = new Stack<>();
@@ -718,7 +718,6 @@ class Graph {
             System.out.print(i + " ");
         System.out.println();
         return pathCounter;
-
     }
 
     // PRIMS ALGORITHM ----------
