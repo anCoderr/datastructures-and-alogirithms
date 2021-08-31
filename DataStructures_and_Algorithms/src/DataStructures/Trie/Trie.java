@@ -7,21 +7,21 @@ package DataStructures.Trie;// Basic Implementation of a DataStructures.Trie.Tri
                           ==> Trie and Tree are different
                           (Trie is a special form of Tree)
 
-            root
-          /  |  \
-         A   M   N
-        / \  \    \
-       D   P  O    A
-      / \  |   \    \
-   ->D  I  P   N    M
-       /  / \   \   |
-      O  L  A   E   E<-
-     /   |  |   |    \
-  ->S  ->E  R ->Y     L-E-S-S<-
-            |
-            E
-           /
-        ->L
+                                        root
+                                      /  |  \
+                                     A   M   N
+                                    / \  \    \
+                                   D   P  O    A
+                                  / \  |   \    \
+                               ->D  I  P   N    M
+                                   /  / \   \   |
+                                  O  L  A   E   E<-
+                                 /   |  |   |    \
+                              ->S  ->E  R ->Y     L-E-S-S<-
+                                        |
+                                        E
+                                       /
+                                    ->L
 
     NOTE => The multiple arrow heads (-> , <-) are essentially Word End specifiers.
             Eg, NAME in itself is a word but NAMELESS can be made by extending nodes
