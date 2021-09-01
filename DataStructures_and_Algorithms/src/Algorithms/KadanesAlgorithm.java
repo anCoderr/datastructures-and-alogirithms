@@ -25,10 +25,16 @@ public class KadanesAlgorithm {
         int start = 0, end = 0, maxEndingHere = 0, maxSoFar = Integer.MIN_VALUE, index = 0, s = 0;
         for(int i : arr) {
             maxEndingHere += i;
+            /* Basically we add 2 consecutive values and then check if
+                this addition benefited us as in is the sum of this merge
+                greater than the element itself.
+            */
+            // Using '=' here helps us to avoid leading zeros.
             if(maxEndingHere <= i) {
                 maxEndingHere = i;
                 s = index;
             }
+            // Check is the merged values somehow benefiting our maxSum so far
             if(maxSoFar < maxEndingHere) {
                 maxSoFar = maxEndingHere;
                 start = s;
