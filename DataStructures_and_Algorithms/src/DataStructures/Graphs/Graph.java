@@ -567,6 +567,7 @@ class Graph {
                 return true;
         return false;
     }
+    //TODO: correct cycle detection using DFS example {a->c,c->b:e,e->d,d->b}
     public boolean DetectCycle_DFS_Recursion_Directed_Utility(boolean[] visited, int current) {
         if(visited[current])
             return true;
