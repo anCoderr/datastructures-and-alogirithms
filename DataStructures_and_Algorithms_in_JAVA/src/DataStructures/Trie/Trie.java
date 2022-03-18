@@ -72,6 +72,7 @@ public class Trie {
     static class Runner {
         public static void main(String[] args) throws Exception {
             Trie trie = new Trie(26);
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             trie.addWord("apple");
             trie.addWord("apollo");
             trie.addWord("apparel");
