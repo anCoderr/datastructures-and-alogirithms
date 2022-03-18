@@ -655,6 +655,7 @@ class Graph {
         System.out.print("DONE!!\n");
         return order;
     }
+    // Same as KHAN'S ALGORITHM thing but a stack is used here.
     public int[] topologicalSorting_DFS_Stack_KhansAlgo() {
         Stack<Integer> stack = new Stack<>();
         int[] order = new int[v];
@@ -681,7 +682,7 @@ class Graph {
         System.out.print("DONE!!\n");
         return order;
     }
-
+    // Same as KHAN'S ALGORITHM but recursion is used here.
     public int[] topologicalSort_DFS_Recursion() {
         int[] order = new int[v];
         boolean[] visited = new boolean[v];
