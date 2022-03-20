@@ -1,22 +1,47 @@
 from Edge import Edge
 from collections import deque
+from DataStructures_and_Algorithms_in_PYTHON.DisjointSets.disjoint_sets import DisjointSets
 
 
 class Graph():
     def __init__(self, v):
         self.v = v
         self.adj = [[] for _ in range(v)]
+        self.edge_list = []
 
     def add_directed_edge(self, source, target, weight=1):
-        self.adj[source].append(Edge(source, target, weight))
+        e1 = Edge(source, target, weight)
+        self.adj[source].append(e1)
+        self.edge_list.append(e1)
 
-    def add_undirected_edge(self, source, target):
-        self.adj[source].append(Edge(source, target))
+    def add_undirected_edge(self, source, target, weight=1):
+        e1 = Edge(source, target, weight)
+        e2 = Edge(target, source, weight)
+        self.adj[source].append(e1)
+        self.adj[target].append(e2)
+        self.edge_list.append(e1)
+        self.edge_list.append(e2)
 
     def print_edge_list(self):
         for i in range(self.v):
             arr = [f'{edge.target}[{edge.weight}] ' for edge in self.adj[i]]
             print(f'{i}: ' + ''.join(arr))
+
+    def detect_cycle_disjoint_sets_undirected(self):
+        ds = DisjointSets(self.v)
+        skip = False
+        for edge in self.edge_list:
+            if skip:
+                skip = False
+                continue
+            skip = True
+            f = ds.find(edge.source)
+            s = ds.find(edge.target)
+            if f == s:
+                return True
+            ds.union(f, s)
+
+        return False
 
     def topological_sorting_BFS(self):
         order = []
