@@ -139,7 +139,49 @@ class Graph():
                 break
         return node_weights
 
+    def discovery_times(self):
+        discovery_times = [float('inf')] * self.v
+        self.discovery_times_utility(0, 1, discovery_times, [False] * self.v, [0] * self.v)
+        return discovery_times
 
+    def discovery_times_utility(self, current: int, time: int, discovery_times: List[int], visited: List[bool], children: List[int]):
+        discovery_times[current] = time
+        visited[current] = True
+        count = 0
+        for edge in self.adj[current]:
+            if not visited[edge.target]:
+                count += 1
+                children[current] += 1
+                time = self.discovery_times_utility(edge.target, time + 1, discovery_times, visited, children)
+        children[current] = count
+        return time
+
+    def low_values(self):
+        low_times = [float('inf')] * self.v
+        discovery_times = self.discovery_times()
+        self.low_values_utility(0, [False] * self.v, low_times, discovery_times, -1)
+        return low_times
+
+    def low_values_utility(self, current: int, visited: List[bool], low_times: List[int], discovery_times: List[int], parent: int):
+        visited[current] = True
+        low_times[current] = discovery_times[current]
+        for edge in self.adj[current]:
+            if edge.target == parent:
+                continue
+            if visited[edge.target]:
+                low_times[current] = min(low_times[current], discovery_times[edge.target])
+            else:
+                low_times[current] = min(low_times[current], self.low_values_utility(edge.target, visited, low_times, discovery_times, current))
+        return low_times[current]
+
+    def bridge_check(self):
+        low_times = self.low_values()
+        discovery_times = self.discovery_times()
+        bridges = []
+        for edge in self.edge_list:
+            if discovery_times[edge.source] < low_times[edge.target]:
+                bridges.append((edge.source, edge.target))
+        return bridges
 
 
 
@@ -167,21 +209,31 @@ undirected_graph_weighted.add_undirected_edge(3, 5, 3)
 undirected_graph_weighted.add_undirected_edge(4, 5, 7)
 # print(undirected_graph_weighted.prims_algorithm())
 # print(undirected_graph_weighted.kruskals_algorithm())
-print(undirected_graph_weighted.dijkstras_algorithm(0))
-print(undirected_graph_weighted.bellman_fords_algorithm(0))
+# print(undirected_graph_weighted.dijkstras_algorithm(0))
+# print(undirected_graph_weighted.bellman_fords_algorithm(0))
 
 
-directed_graph_weighted = Graph(6)
-directed_graph_weighted.add_directed_edge(0, 1, 4)
-directed_graph_weighted.add_directed_edge(0, 2, 6)
-directed_graph_weighted.add_directed_edge(1, 4, 4)
-directed_graph_weighted.add_directed_edge(1, 3, 3)
-directed_graph_weighted.add_directed_edge(2, 1, 6)
-directed_graph_weighted.add_directed_edge(3, 2, 1)
-directed_graph_weighted.add_directed_edge(3, 4, 2)
-directed_graph_weighted.add_directed_edge(5, 3, 3)
-directed_graph_weighted.add_directed_edge(4, 5, 7)
-print(directed_graph_weighted.dijkstras_algorithm(0))
-print(directed_graph_weighted.bellman_fords_algorithm(0))
+# directed_graph_weighted = Graph(6)
+# directed_graph_weighted.add_directed_edge(0, 1, 4)
+# directed_graph_weighted.add_directed_edge(0, 2, 6)
+# directed_graph_weighted.add_directed_edge(1, 4, 4)
+# directed_graph_weighted.add_directed_edge(1, 3, 3)
+# directed_graph_weighted.add_directed_edge(2, 1, 6)
+# directed_graph_weighted.add_directed_edge(3, 2, 1)
+# directed_graph_weighted.add_directed_edge(3, 4, 2)
+# directed_graph_weighted.add_directed_edge(5, 3, 3)
+# directed_graph_weighted.add_directed_edge(4, 5, 7)
+# print(directed_graph_weighted.dijkstras_algorithm(0))
+# print(directed_graph_weighted.bellman_fords_algorithm(0))
+
+undirected_graph_unweighted = Graph(5)
+undirected_graph_unweighted.add_undirected_edge(0,1)
+undirected_graph_unweighted.add_undirected_edge(0,2)
+undirected_graph_unweighted.add_undirected_edge(0,3)
+undirected_graph_unweighted.add_undirected_edge(1,2)
+undirected_graph_unweighted.add_undirected_edge(3,4)
+print(undirected_graph_unweighted.discovery_times())
+print(undirected_graph_unweighted.low_values())
+print(undirected_graph_unweighted.bridge_check())
 
 
