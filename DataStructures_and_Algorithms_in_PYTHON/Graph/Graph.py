@@ -1,9 +1,10 @@
 from typing import List
-
+from heapq import *
 from Edge import Edge
 from collections import deque
 from DataStructures_and_Algorithms_in_PYTHON.DisjointSets.disjoint_sets import DisjointSets
-
+import time
+from datetime import datetime
 
 class Graph():
     def __init__(self, v):
@@ -94,6 +95,27 @@ class Graph():
             print(f'{parent[i]} -> {i}')
         return sum(node_weights)
 
+    def prims_algorithm_optimized(self):
+        node_heap = [(0, 0, -1)]
+        mst_cost = 0
+        setMST = [False] * self.v
+        parent = [-1] * self.v
+        edge_used = 0
+        while edge_used < self.v:
+            curr_weight, curr_node, curr_parent = heappop(node_heap)
+            if setMST[curr_node]:
+                continue
+            setMST[curr_node] = True
+            mst_cost += curr_weight
+            parent[curr_node] = curr_parent
+            edge_used += 1
+            for edge in self.adj[curr_node]:
+                if not setMST[edge.target]:
+                    heappush(node_heap, (edge.weight, edge.target, curr_node))
+        for i in range(1, self.v):
+            print(f'{parent[i]} -> {i}')
+        return mst_cost
+
     def kruskals_algorithm(self):
         sorted_edge_list = sorted(self.edge_list, key=lambda edge: edge.weight)
         # Since undirected edges exist in pairs sorted edge list contains same adjacent values
@@ -101,7 +123,7 @@ class Graph():
         setMST = []
         ds = DisjointSets(self.v)
         for edge in sorted_edge_list:
-            if len(setMST) >= self.v-1:
+            if len(setMST) >= self.v - 1:
                 break
             source = ds.find(edge.source)
             target = ds.find(edge.target)
@@ -116,22 +138,22 @@ class Graph():
         return edge_weight
 
     def dijkstras_algorithm(self, start: int):
-        node_weights = [float('inf')]*self.v
-        finalized = [False]*self.v
+        node_weights = [float('inf')] * self.v
+        finalized = [False] * self.v
         node_weights[start] = 0
         for _ in range(self.v):
             current = self.select_mid_weight_node(node_weights, finalized)
             finalized[current] = True
             for edge in self.adj[current]:
-                node_weights[edge.target] = min(node_weights[edge.target], node_weights[current]+edge.weight)
+                node_weights[edge.target] = min(node_weights[edge.target], node_weights[current] + edge.weight)
         return node_weights
 
     def bellman_fords_algorithm(self, start: int):
-        node_weights = [float('inf')]*self.v
+        node_weights = [float('inf')] * self.v
         node_weights[start] = 0
-        for _ in range(self.v-1):
+        for _ in range(self.v - 1):
             for edge in self.edge_list:
-                node_weights[edge.target] = min(node_weights[edge.target], node_weights[edge.source]+edge.weight)
+                node_weights[edge.target] = min(node_weights[edge.target], node_weights[edge.source] + edge.weight)
         for edge in self.edge_list:
             # If Shortest Path still decreases then we have a -ve edge weight cycle.
             if node_weights[edge.target] > node_weights[edge.source] + edge.weight:
@@ -144,7 +166,8 @@ class Graph():
         self.discovery_times_utility(0, 1, discovery_times, [False] * self.v, [0] * self.v)
         return discovery_times
 
-    def discovery_times_utility(self, current: int, time: int, discovery_times: List[int], visited: List[bool], children: List[int]):
+    def discovery_times_utility(self, current: int, time: int, discovery_times: List[int], visited: List[bool],
+                                children: List[int]):
         discovery_times[current] = time
         visited[current] = True
         count = 0
@@ -162,7 +185,8 @@ class Graph():
         self.low_values_utility(0, [False] * self.v, low_times, discovery_times, -1)
         return low_times
 
-    def low_values_utility(self, current: int, visited: List[bool], low_times: List[int], discovery_times: List[int], parent: int):
+    def low_values_utility(self, current: int, visited: List[bool], low_times: List[int], discovery_times: List[int],
+                           parent: int):
         visited[current] = True
         low_times[current] = discovery_times[current]
         for edge in self.adj[current]:
@@ -171,7 +195,9 @@ class Graph():
             if visited[edge.target]:
                 low_times[current] = min(low_times[current], discovery_times[edge.target])
             else:
-                low_times[current] = min(low_times[current], self.low_values_utility(edge.target, visited, low_times, discovery_times, current))
+                low_times[current] = min(low_times[current],
+                                         self.low_values_utility(edge.target, visited, low_times, discovery_times,
+                                                                 current))
         return low_times[current]
 
     def bridge_check(self):
@@ -182,8 +208,6 @@ class Graph():
             if discovery_times[edge.source] < low_times[edge.target]:
                 bridges.append((edge.source, edge.target))
         return bridges
-
-
 
 
 # directed_graph_unweighted = Graph(6)
@@ -207,11 +231,11 @@ undirected_graph_weighted.add_undirected_edge(2, 3, 1)
 undirected_graph_weighted.add_undirected_edge(3, 4, 2)
 undirected_graph_weighted.add_undirected_edge(3, 5, 3)
 undirected_graph_weighted.add_undirected_edge(4, 5, 7)
-# print(undirected_graph_weighted.prims_algorithm())
-# print(undirected_graph_weighted.kruskals_algorithm())
+print(undirected_graph_weighted.prims_algorithm())
+print(undirected_graph_weighted.prims_algorithm_optimized())
+print(undirected_graph_weighted.kruskals_algorithm())
 # print(undirected_graph_weighted.dijkstras_algorithm(0))
 # print(undirected_graph_weighted.bellman_fords_algorithm(0))
-
 
 # directed_graph_weighted = Graph(6)
 # directed_graph_weighted.add_directed_edge(0, 1, 4)
@@ -226,14 +250,12 @@ undirected_graph_weighted.add_undirected_edge(4, 5, 7)
 # print(directed_graph_weighted.dijkstras_algorithm(0))
 # print(directed_graph_weighted.bellman_fords_algorithm(0))
 
-undirected_graph_unweighted = Graph(5)
-undirected_graph_unweighted.add_undirected_edge(0,1)
-undirected_graph_unweighted.add_undirected_edge(0,2)
-undirected_graph_unweighted.add_undirected_edge(0,3)
-undirected_graph_unweighted.add_undirected_edge(1,2)
-undirected_graph_unweighted.add_undirected_edge(3,4)
-print(undirected_graph_unweighted.discovery_times())
-print(undirected_graph_unweighted.low_values())
-print(undirected_graph_unweighted.bridge_check())
-
-
+# undirected_graph_unweighted = Graph(5)
+# undirected_graph_unweighted.add_undirected_edge(0, 1)
+# undirected_graph_unweighted.add_undirected_edge(0, 2)
+# undirected_graph_unweighted.add_undirected_edge(0, 3)
+# undirected_graph_unweighted.add_undirected_edge(1, 2)
+# undirected_graph_unweighted.add_undirected_edge(3, 4)
+# print(undirected_graph_unweighted.discovery_times())
+# print(undirected_graph_unweighted.low_values())
+# print(undirected_graph_unweighted.bridge_check())
