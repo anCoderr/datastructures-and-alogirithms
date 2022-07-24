@@ -1,0 +1,15 @@
+from typing import List
+
+
+class Solution:
+    def shortestSequence(self, rolls: List[int], k: int) -> int:
+        ans, visited = 0, set()
+        for r in rolls:
+            visited.add(r)
+            if len(visited) == k:
+                visited.clear()
+                ans += 1
+        return ans + 1
+
+obj = Solution()
+print(obj.shortestSequence(rolls = [4,2,1,2,3,3,2,4,1], k = 4))

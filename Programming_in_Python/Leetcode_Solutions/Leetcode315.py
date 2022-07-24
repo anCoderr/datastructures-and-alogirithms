@@ -32,5 +32,5 @@ class Solution:
         merge_utility(0, n-1)
         return ans
 
-solution = Solution()
-print(solution.countSmaller([3,4,2,1,1,2,5,3]))
+obj = Solution()
+print(obj.countSmaller([3,4,2,1,1,2,5,3]))
