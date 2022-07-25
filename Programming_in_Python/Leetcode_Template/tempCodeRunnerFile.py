@@ -1,0 +1,6 @@
+("contests", "son"))
+# print("Optimized:", optimized_solver("contests", "son"))
+# print("Brute:", brute_solver("abcdefghijklmnopqrstuvwxyz", "zyxwvutsrqponmlkjihgfedcba"))
+# print("Optimized:", optimized_solver("abcdefghijklmnopqrstuvwxyz", "zyxwvutsrqponmlkjihgfedcba"))
+# print("Brute:", brute_solver("zyxwvutsrqponmlkjihgfedcba", "abcdefghijklmnopqrstuvwxyz"))
+# print("Optimized:", optimized_solver("zyxwvutsrqponmlkjihgfedcba", "abcdefghijklmnopqrstuvwxyz"))
