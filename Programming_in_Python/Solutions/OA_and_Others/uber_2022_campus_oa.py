@@ -64,7 +64,7 @@ from DataStructures_and_Algorithms_in_PYTHON.DisjointSets.disjoint_sets import D
 
 
 
-# OUESTION 2:
+# # OUESTION 2:
 
 # def brute_solver_two(n, X, Y, Z):
 
@@ -79,7 +79,8 @@ def optimized_solver_two(n, X, Y, Z):
             elif val > mid_val:
                 l = mid+1                
             else:
-                return mid
+                
+                # return mid
                 # if mid_idx == idx:
                 #     return mid
                 # if mid_idx < idx:
@@ -88,7 +89,7 @@ def optimized_solver_two(n, X, Y, Z):
         return -1
 
     def lookup_utility():
-        
+
 
     dj = DisjointSets(n)
     X_sorted = sorted([(x, i) for i, x in enumerate(X)])
@@ -118,3 +119,7 @@ def optimized_solver_two(n, X, Y, Z):
 
 print("Optimized:", optimized_solver_two(3, [1,5,7],[2,9,4],[1,3,9]))
 print("Optimized:", optimized_solver_two(3, [1,2,1],[2,9,4],[7,4,9]))
+
+
+
+
