@@ -1,10 +1,11 @@
 from typing import List
 from heapq import *
-from Edge import Edge
+# from edge import Edge
+from DataStructures_and_Algorithms_in_PYTHON.Graph.edge import Edge
 from collections import deque
 from DataStructures_and_Algorithms_in_PYTHON.DisjointSets.disjoint_sets import DisjointSets
 
-class Graph():
+class Graph:
     def __init__(self, v):
         self.v = v
         self.adj = [[] for _ in range(v)]
@@ -219,19 +220,19 @@ class Graph():
 # directed_graph_unweighted.print_edge_list()
 # print(directed_graph_unweighted.topological_sorting_BFS())
 
-undirected_graph_weighted = Graph(6)
-undirected_graph_weighted.add_undirected_edge(0, 1, 4)
-undirected_graph_weighted.add_undirected_edge(0, 2, 6)
-undirected_graph_weighted.add_undirected_edge(1, 4, 4)
-undirected_graph_weighted.add_undirected_edge(1, 3, 3)
-undirected_graph_weighted.add_undirected_edge(2, 1, 6)
-undirected_graph_weighted.add_undirected_edge(2, 3, 1)
-undirected_graph_weighted.add_undirected_edge(3, 4, 2)
-undirected_graph_weighted.add_undirected_edge(3, 5, 3)
-undirected_graph_weighted.add_undirected_edge(4, 5, 7)
-print(undirected_graph_weighted.prims_algorithm())
-print(undirected_graph_weighted.prims_algorithm_optimized())
-print(undirected_graph_weighted.kruskals_algorithm())
+# undirected_graph_weighted = Graph(6)
+# undirected_graph_weighted.add_undirected_edge(0, 1, 4)
+# undirected_graph_weighted.add_undirected_edge(0, 2, 6)
+# undirected_graph_weighted.add_undirected_edge(1, 4, 4)
+# undirected_graph_weighted.add_undirected_edge(1, 3, 3)
+# undirected_graph_weighted.add_undirected_edge(2, 1, 6)
+# undirected_graph_weighted.add_undirected_edge(2, 3, 1)
+# undirected_graph_weighted.add_undirected_edge(3, 4, 2)
+# undirected_graph_weighted.add_undirected_edge(3, 5, 3)
+# undirected_graph_weighted.add_undirected_edge(4, 5, 7)
+# print(undirected_graph_weighted.prims_algorithm())
+# print(undirected_graph_weighted.prims_algorithm_optimized())
+# print(undirected_graph_weighted.kruskals_algorithm())
 # print(undirected_graph_weighted.dijkstras_algorithm(0))
 # print(undirected_graph_weighted.bellman_fords_algorithm(0))
 

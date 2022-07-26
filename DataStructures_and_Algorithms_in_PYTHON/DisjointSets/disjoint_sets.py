@@ -30,8 +30,9 @@ class DisjointSetsBrute:
 # The idea is to take the union of the sets in such a fashion
 #    that the height of the new tree remains the same and doesnt increase.
 #    In the basic implementation we didn't take that into account and just
-#    assigned 2ed set to the 1st set. For doing that we keep add a rank array
-#    that keeps track of the rank of each set.
+#    assigned 2ed set to the 1st set. For doing that we keep a rank array
+#    that keeps track of the rank of each set. We assign smaller one to 
+#    the larget one.
 #
 #
 # Disjoint Sets using UNION BY RANK
@@ -67,9 +68,9 @@ class DisjointSetsSemiOptimized:
 #
 # Path Compression is an optimization for the Find function for Disjoint Sets.
 #
-# The idea is to take to directly connect the lower nodes directly to their
-#    representative after current find is implemented in simple recursive fashion.
-#    This way we are actually optimizing the find function for later calls of the function.
+# The idea is to take to connect the lower nodes directly to their representative after 
+#    current find is implemented in simple recursive fashion. This way we are actually 
+#    optimizing the find function for later calls of the function.
 #
 #          0                           0
 #         / \     Find for 3          /|\     ==> For future calls for find lets say 6/7
