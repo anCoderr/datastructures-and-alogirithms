@@ -1,4 +1,4 @@
-from DataStructures_and_Algorithms_in_PYTHON.Trie.TrieNode import TrieNode
+from DataStructures_and_Algorithms_in_PYTHON.Trie.trie_node import TrieNode
 
 
 class Trie():

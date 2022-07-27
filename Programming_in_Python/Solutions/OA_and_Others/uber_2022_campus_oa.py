@@ -148,7 +148,6 @@ def optimized_solver_two(n, X, Y, Z):
 
         if val == float('inf'):
             continue
-\
         if val == x_prev:
             print(x_prev_idx, i)
             dj.union(x_prev_idx, i)
@@ -167,6 +166,7 @@ def optimized_solver_two(n, X, Y, Z):
         elif val == z_after:
             print(z_after_idx, i)
             dj.union(z_after_idx, i)
+            
         # print(val)
         cost += val
     return cost
