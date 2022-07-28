@@ -1,0 +1,204 @@
+**QUESTION:**
+![image](https://assets.leetcode.com/users/images/95f19514-2474-4274-8696-525d26811180_1658997248.9840007.png)
+![image](https://assets.leetcode.com/users/images/2c77b9ff-66d3-4ac9-b220-730cd204fa38_1658997251.4826417.png)
+
+**OBSERVATIONS:**
+1. Basically what is asked of us is to form a MST for the given graph and return total edge weight of that MST.
+2. MST algorithms like Prims or Kruskals take `O((V+E)logV)` and `O(ElogE)` respectively. 
+3. `V = N` and `E = N^2` as it is a fully connected graph. Thus simple Prim's / Kruskal's wont work.
+4. MST has V-1 total edges. That means of the N^2 edges in our graph, we will effectively only be using N-1 of those. 
+5. Thus majority of edges are not of any use to us. 
+6. We somehow need to reduce the number of edges to solve under given execution time. 
+7. Thus Effective No. of Edges must be (Some Constant) X N. 
+8. **On a completely unrelated note:** The minimum absolute difference of a given value X[i]=A at index i in a sorted array X is with either X[i-1] or X[i+1]. **THIS IS IMPORTANT.**
+
+**MY APPRAOCH:**
+1. Sort the given `X, Y, Z` edges into `X_sorted, Y_sorted, Z_sorted` with each element being `[value, original_index]`.
+2. Now we iterate over `N` i.e all the edges.
+3. For each iteration we take the `x, y, z` positions of that node.
+4. We search `curr_x, curr_y, curr_z`'s  location in `X_sorted, Y_sorted, Z_sorted` arrays. Such that the `value` and `original_index` both match. Let these index be `i, j, k`.
+5. Now the closest x to curr_x will be at X_sorted[i-1] or X_sorted[i+1]. Same goes for y and z.
+6. You might be getting along with the idea now. 
+7. The effective number of edges for current node becomes:
+	* `curr_node --- (i-1)`
+	* `curr_node --- (i+1)`
+	* `curr_node --- (j-1)`
+	* `curr_node --- (j+1)`
+	* `curr_node --- (k-1)`
+	* `curr_node --- (k+1)`
+	* Thus for each node we can have atmost 6 edges. Thereby the total effective number of edges become 6N.
+8. The above idea is difficult to grasp. What helped me was to rather than looking at the problem like a Graph problem, think of it as a Geometry Problem. You have multiple points on a 3D plane. And we want to connect them by using smallest amount of line segemnts. Since 3D is difficult to imagine, I took 3 different planes one for X, one for Y, one for Z.
+9. So we keep adding edges for each node.
+10. Simply apply Kruskal's Algorithm on the formed graph.
+
+***If your are thinking that the nodes closer to each other will form edges with one another. And hence we will have a disconnected graph??***
+For nodes distribute like given below. We can see that there are 3 groups of points - Group1:{0,1,2,3}, Group2:{4,5,6,7,8}, Group3:{9}. Now when we sort them along x, y, z. These nodes as they appear here in groups wont appear in groups in the sorted arrays. **Why??** Because group in 3D plane depends on all of x, y, z simultaneously but in X/Y/Z_sorted they won't as there they only depend on x/y/z. Hence in sorted array the nodes will get intermingled. No Grouping. Hence when we Binary Search for a certain node, we will get x_prev and x_after from different or same groups. Hence their wont be any problem of disconnected graphs.
+![image](https://assets.leetcode.com/users/images/968b2891-8d97-4c06-99ee-802ff996a66a_1659001518.8906589.jpeg) 
+
+
+**CODE:** *(Code might look long, but the important bits are'nt. The implementation of Binary Search, Disjoint Sets and Graphs takes a lot of space.)*
+```
+from random import randint
+from heapq import *
+
+# Disjoint Sets using UNION BY RANK and PATH COMPRESSION for faster operations.
+class DisjointSets:
+    def __init__(self, n):
+        self.n = n
+        self.parent = [i for i in range(n)]
+        self.rank = [0] * n
+
+    def find(self, x):
+        if self.parent[x] == x:
+            return x
+        self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        parent_x = self.find(x)
+        parent_y = self.find(y)
+        if parent_x == parent_y:
+            return
+        rank_x = self.rank[x]
+        rank_y = self.rank[y]
+        if rank_x < rank_y:
+            self.parent[parent_x] = parent_y
+        else:
+            self.parent[parent_y] = parent_x
+            if rank_x == rank_y:
+                self.rank[parent_x] += 1
+
+# Custom made graph class with only required functionalities.
+class Graph:
+    def __init__(self, v):
+        self.v = v
+        self.edge_list = []
+
+    def add_undirected_edge(self, source, target, weight=1):
+        heappush(self.edge_list, [weight, source, target])
+
+    def kruskals_algorithm(self):
+        setMST = 0
+        ds = DisjointSets(self.v)
+        n = 0
+        while self.edge_list:
+            if n > self.v:
+                break
+            edge = heappop(self.edge_list)
+            source = ds.find(edge[1])
+            target = ds.find(edge[2])
+            if source == target:
+                continue
+            ds.union(source, target)
+            setMST += edge[0]
+            n += 1
+        return setMST
+
+######### BRUTE APPROACH:
+# Brute Method is to form the entire graph and then find MST using Kruskals Algorithm.
+# The total number of edges in graph is N^2 and space required to store is also O(N^2).
+# Since Kruskals works in time complexity of O(ElogE) => O((N^2)log(N^2)) which indeed gives TLE.
+def brute_solver_two(n, X, Y, Z):
+    graph = Graph(n)
+    for i in range(n):
+        for j in range(n):
+            graph.add_undirected_edge(i, j, min(abs(X[i]-X[j]), abs(Y[i]-Y[j]), abs(Z[i]-Z[j])))
+    return graph.kruskals_algorithm()
+
+def binary_search(n, val, idx, arr):
+        l, r = 0, n-1
+        while l <= r:
+            mid = (l+r)//2
+            mid_val, mid_idx = arr[mid]
+            if val < mid_val:
+                r = mid-1
+            elif val > mid_val:
+                l = mid+1                
+            else: # target value found.
+				# Now we must find same index.
+                d = 1 if mid_idx < idx else -1 # Since for same value, we sort along their indices(2nd property). We either move forward or backward to get to idx.
+                while arr[mid][1] != idx:
+                    mid += d
+                left, right = mid-1, mid+1
+                return (float('inf') if left < 0 else arr[left][0], left, float('inf') if right >= len(arr) else arr[right][0], right) # Return infinity when left or right overflows.
+        return -1
+
+######### OPTIMIZED APPROACH:
+def optimized_solver_two(n, X, Y, Z):
+    graph = Graph(n)
+	# Form sorted arrays with value, original_index.
+    X_sorted = sorted([(x, i) for i, x in enumerate(X)])
+    Y_sorted = sorted([(y, i) for i, y in enumerate(Y)])
+    Z_sorted = sorted([(z, i) for i, z in enumerate(Z)])
+
+    for i in range(n):
+        x_curr, y_curr, z_curr = X[i], Y[i], Z[i] # x, y, z positions for current node.
+		# Binary search gives us arr[index-1], index-1, arr[index+1], index+1
+        x_prev, x_prev_idx, x_after, x_after_idx = binary_search(n, x_curr, i, X_sorted) 
+        y_prev, y_prev_idx, y_after, y_after_idx = binary_search(n, y_curr, i, Y_sorted)
+        z_prev, z_prev_idx, z_after, z_after_idx = binary_search(n, z_curr, i, Z_sorted)
+        
+		# Calculate absolute difference.
+        x_prev = abs(x_curr - x_prev)
+        x_after = abs(x_curr - x_after)
+        y_prev = abs(y_curr - y_prev)
+        y_after = abs(y_curr - y_after)
+        z_prev = abs(z_curr - z_prev)
+        z_after = abs(z_curr - z_after)
+        
+		# If index was 0 then index-1 was -1 ie invalid(we retured infinity in this case). Similar if index = len(arr)-1, as index+1 will overflow.
+		# Insert all valid edges into graph.
+        if x_prev != float('inf'):
+            graph.add_undirected_edge(i, X_sorted[x_prev_idx][1], x_prev)
+        if x_after != float('inf'):
+            graph.add_undirected_edge(i, X_sorted[x_after_idx][1], x_after)
+        if y_prev != float('inf'):
+            graph.add_undirected_edge(i, Y_sorted[y_prev_idx][1], y_prev)
+        if y_after != float('inf'):
+            graph.add_undirected_edge(i, Y_sorted[y_after_idx][1], y_after)
+        if z_prev != float('inf'):
+            graph.add_undirected_edge(i, Z_sorted[z_prev_idx][1], z_prev)
+        if z_after != float('inf'):
+            graph.add_undirected_edge(i, Z_sorted[z_after_idx][1], z_after)
+
+	# Simply return the weight of MST.
+    return graph.kruskals_algorithm()
+
+
+# Testing optimized approach with respect to brute one. 
+# The brute one obviously works.
+# The optimized one is to be checked.
+n = 6
+X = [0,10,4,10000,10011,10027]
+Y = [11,4,7,10009,10102,10061]
+Z = [21,3,20,10019,10059,10011]
+print("Brute:", brute_solver_two(n, X, Y, Z), end=" ")
+print("Optimized:", optimized_solver_two(n, X, Y, Z))
+
+print("Brute:", brute_solver_two(3, [1,5,7],[2,9,4],[1,3,9]), end=" ")
+print("Optimized:", optimized_solver_two(3, [1,5,7],[2,9,4],[1,3,9]))
+print("Brute:", brute_solver_two(3, [1,2,1],[2,9,4],[7,4,9]), end=" ")
+print("Optimized:", optimized_solver_two(3, [1,2,1],[2,9,4],[7,4,9]))
+n = 8
+X = [1,11,3,2,1,7,4,7]
+Y = [7,2,3,8,11,2,3,2]
+Z = [2,3,1,4,10,8,9,8]
+print("Brute:", brute_solver_two(n, X, Y, Z), end=" ")
+print("Optimized:", optimized_solver_two(n, X, Y, Z))
+
+n = 10
+X = [15, 11, 17, 11, 8, 10, 16, 19, 17, 12]
+Y = [15, 18, 18, 19, 14, 14, 15, 14, 16, 11]
+Z = [6, 18, 18, 3, 16, 19, 15, 13, 16, 6]
+print("Brute:", brute_solver_two(n, X, Y, Z), end=" ")
+print("Optimized:", optimized_solver_two(n, X, Y, Z))
+
+# Generating random test cases.
+for t in range(5):
+    n = randint(1000,10000)
+    X = [randint(-100000,100000) for _ in range(n)]
+    Y = [randint(-100000,100000) for _ in range(n)]
+    Z = [randint(-100000,100000) for _ in range(n)]
+    # print("Brute:", brute_solver_two(n, X, Y, Z), end=" ") # Wait for a while as brute method takes time for larger values of n.
+    print("Optimized:", optimized_solver_two(n, X, Y, Z))
+```

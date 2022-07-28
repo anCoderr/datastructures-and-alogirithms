@@ -132,7 +132,7 @@ class Graph:
             setMST.append(edge)
         edge_weight = 0
         for mst_edge in setMST:
-            print(f'{mst_edge.source} --[{mst_edge.weight}]--> {mst_edge.target}')
+            # print(f'{mst_edge.source} --[{mst_edge.weight}]--> {mst_edge.target}')
             edge_weight += mst_edge.weight
         return edge_weight
 
