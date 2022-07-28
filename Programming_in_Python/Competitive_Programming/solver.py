@@ -1,25 +1,26 @@
-print('------------------------------------------------------------')
+import bisect
+import heapq
+import queue
+import random
+import re
+import string
 import sys
-from collections import deque
+from bisect import *
+from collections import *
+from collections import Counter
+from functools import lru_cache
+from heapq import *
+import itertools as itr
+from math import *
+from time import *
+from typing import List, Optional
 
-sys.stdin = open('C:\AnCodeRR\Leetcode_Solutions\CompetitiveProgrammingPython\input.txt', 'r')
+sys.stdin = open('Programming_in_Python\Competitive_Programming\input.txt', 'r')
+sys.stdout = open('Programming_in_Python\Competitive_Programming\output.txt', 'w')
 
-sys.stdin = open('input.txt', 'r')
-
-sys.stdout = open('output.txt', 'w')
-
-while True:
-    try:
-        line = input()
-        print(line)
-    except EOFError:
-        break
-
-a = 10
-b = a // 5
-print(a + b)
-c = a ** 2
-c += b * 3
-print(a + b + c)
-d = deque()
-d.append
+t = int(input())
+for _ in range(t):
+    a = int(input())
+    N, M = [int(i) for i in input().split(' ')]
+    print(a, N, M)
+    
