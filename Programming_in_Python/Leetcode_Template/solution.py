@@ -1,4 +1,5 @@
 import bisect
+from cgitb import small
 import heapq
 import queue
 import random
@@ -14,62 +15,57 @@ import itertools as itr
 from math import *
 from time import *
 from typing import List, Optional
-
+from DataStructures_and_Algorithms_in_PYTHON.Graph.Graph import Graph
 from list_node import *
 from tree_node import *
 
+# class Solution:
+#     def matempimumGroups(self, grades: List[int]) -> int:
+#         grades.sort()
+#         l, r = 0, len(grades)-1
+#         traverse = 0
+#         groups = 0
+#         prev_sum = 0
+#         while l < r:
+#             target = l + traverse
+#             if target > r:
+#                 break
+#             s = grades[r]
+#             while l < target:
+#                 s += grades[l]
+#                 l += 1
+#             while l < r and s <= prev_sum:
+#                 s += grades[l]
+#                 l += 1
+#             r -= 1
+#             prev_sum = s
+#             traverse += 1
+#             groups += 1
+#         return groups
 
-class NumberContainers:
-    def __init__(self):
-        self.val_table = [defaultdict(lambda: -1)] * (10 ** 5 + 1)
-        self.heap_table = defaultdict(lambda: [])
-
-    def change(self, index: int, number: int) -> None:
-        bucket = self.val_table[index // 10 ** 4]
-        bucket[index] = number
-        heappush(self.heap_table[number], index)
-
-    def find(self, number: int) -> int:
-        arr = self.heap_table[number]
-        while arr:
-            index = arr[0]
-            bucket = self.val_table[index // 10 ** 4]
-            if bucket[index] == number:
-                return index
-            heappop(arr)
+class Solution:
+    def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:
+        n = len(edges)
+        graph = Graph(n)        
+        for source, target in enumerate(edges):
+            graph.add_directed_edge(source, target)
+        dj1 = graph.dijkstras_algorithm(node1)
+        dj2 = graph.dijkstras_algorithm(node2)
+        print(dj1)
+        print(dj2)
+        arr = [max(dj1[i],dj2[i]) for i in range(n)]
+        print(arr)
+        smallest = min(arr)
+        if smallest == float('inf'):
+            return -1
+        for i in range(n):
+            if arr[i] == smallest:
+                return i
         return -1
 
 
-# Your NumberContainers object will be instantiated and called as such:
-# obj = NumberContainers()
-# obj.change(index,number)
-# param_2 = obj.find(number)
-
-# obj = NumberContainers()
-# print(obj.find(10))
-# print(obj.change(2, 10))
-# print(obj.change(1, 10))
-# print(obj.change(3, 10))
-# print(obj.change(5, 10))
-# print(print(obj.find(10)))
-# print(print(obj.change(1,20)))
-# print(obj.find(10))
-
-obj = NumberContainers()
-print(obj.find(10))
-print(obj.change(1000000000, 10))
-print(obj.find(10))
-
-# solution = Solution()
-
-
-# ["NumberContainers", "find", "change", "change", "change", "change", "find", "change", "find"]
-# [[], [10], [2, 10], [1, 10], [3, 10], [5, 10], [10], [1, 20], [10]]
-# ["NumberContainers","find","change","find"]
-# [[],[10],[1000000000,10],[10]]
-
-
-# ["NumberContainers","change","change","find","find","find","change","find","find","change","find","change","change","change","find","find","change","find","change","change","change"]
-# [[],[25,50],[56,31],[50],[50],[43],[30,50],[31],[43],[25,20],[50],[56,43],[68,31],[56,31],[20],[43],[25,43],[43],[56,31],[54,43],[63,43]]
-# [null,null,null,25,-1,-1,null,56,-1,null,30,null,null,null,25,-1,null,25,null,null,null] # Got
-# [null,null,null,25,25,-1,null,56,-1,null,30,null,null,null,25,-1,null,25,null,null,null] # Expected
+obj = Solution()
+# print(obj.closestMeetingNode(edges = [2,2,3,-1], node1 = 0, node2 = 1))
+# print(obj.closestMeetingNode(edges = [1,2,-1], node1 = 0, node2 = 2))
+# print(obj.closestMeetingNode([4,4,8,-1,9,8,4,4,1,1],5,6))
+print(obj.closestMeetingNode([5,4,5,4,3,6,-1],0,1))
