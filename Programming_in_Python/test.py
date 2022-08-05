@@ -1,30 +1,31 @@
-from collections import defaultdict
-from typing import List
+# from cgitb import small
+# import numbers
 
 
-class Solution:
-    def maxCoins(self, nums: List[int]) -> int:
-        dp = defaultdict(lambda: {})
-        a, b = 0, 0
-        def recursion(arr):
-            nonlocal a, b
-            if len(arr) == 2: 
-                profit = arr[0] * arr[1] + max(arr[0], arr[1])
-            n = len(arr)
-            key = '-'.join(map(str, arr))
-            if key not in dp[n]:
-                a += 1
-                max_profit = 0
-                for i in range(len(arr)):
-                    profit = (arr[i-1] if i-1 >= 0 else 1) * arr[i] * (arr[i+1] if i+1 < n else 1) 
-                    profit += recursion(arr[:i] + arr[i+1:])
-                    max_profit = max(max_profit, profit)
-                dp[n][key] = max_profit                
-            else: b += 1
-            return dp[n][key]
-        ans = recursion(nums)
-        print(a, b)
-        return ans
+# def getSum(n):
+# 	sum1 = 0;
+# 	while (n != 0):
+# 		sum1 = sum1 + n % 10;
+# 		n = n // 10
+# 	return sum1
 
-obj = Solution()
-print(obj.maxCoins([21,2,0,17,1,3,9,12]))
+# def smallestNumber(N):
+# 	i = 1
+# 	while True:
+# 		if (getSum(i) == N):
+# 			return i
+		# i += 1
+	
+# print(smallestNumber(16))
+# print(smallestNumber(19))
+# print(smallestNumber(7))
+
+
+
+def smallestNumber(N):
+    no_of_nines = N // 9
+    remainder = N % 9
+    return int(str(remainder) + "9"*no_of_nines)
+
+for i in range(0, 51):
+    print(smallestNumber(i))
