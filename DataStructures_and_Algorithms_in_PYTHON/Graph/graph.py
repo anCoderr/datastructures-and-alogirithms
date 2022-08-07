@@ -1,3 +1,4 @@
+import graphlib
 from typing import List
 from heapq import *
 # from edge import Edge
@@ -29,6 +30,11 @@ class Graph:
             arr = [f'{edge.target}[{edge.weight}] ' for edge in self.adj[i]]
             print(f'{i}: ' + ''.join(arr))
 
+##########################################################################################
+##########################################################################################
+##### CYCLE DETECTION IN UNDIRECTED GRAPHS:
+
+##### Using Disjoint Sets:
     def detect_cycle_disjoint_sets_undirected(self):
         ds = DisjointSets(self.v)
         skip = False
@@ -43,6 +49,106 @@ class Graph:
                 return True
             ds.union(f, s)
         return False
+
+    def detect_cycle_dfs_undirected(self):
+        visited = [False] * self.v
+        def dfs(current, parent):
+            visited[current] = True
+            for edge in self.adj[current]:
+                if not visited[edge.target]:
+                    if dfs(edge.target):
+                        return True
+                elif edge.target != parent:
+                    return True
+            return False
+        for i in range(self.v):
+            if not visited[i] and dfs(i, -1):
+                return True
+        return False
+
+    def detect_cycle_bfs_undirected(self):
+        visited = [False] * self.v
+        def bfs(q):
+            while q:
+                current, parent = q.popleft()
+                visited[current] = True
+                for edge in self.adj[current]:
+                    if not visited[edge.target]:
+                        q.append([edge.target, current])
+                        visited[edge.target] = True
+                    elif parent != edge.target:
+                        return True
+            return False
+        for i in range(self.v):
+            if not visited[i] and bfs(deque([i, -1])):
+                return True
+        return False
+
+##########################################################################################
+##########################################################################################
+##### CYCLE DETECTION IN DIRECTED GRAPHS:
+
+    def detect_cycle_dfs_directed(self):
+        dfs_visited = [False] * self.v
+        global_visited = [False] * self.v
+        def dfs(current):
+            dfs_visited[current] = True
+            global_visited[current] = True
+            for edge in self.adj[current]:
+                if not global_visited[edge.target]:
+                    if dfs(edge.target):
+                        return True
+                elif dfs_visited[edge.target]:
+                    return True
+            dfs_visited[current] = False
+            return False
+        for i in range(self.v):
+            if not global_visited[i] and dfs(i):
+                return True
+        return False
+
+##### Using Kahn's Algorithm for Topological Sort for DAG: 
+    def detect_cycle_bfs_directed(self):
+        order_len = 0
+        queue = deque()
+        indegree = [0] * self.v
+        for arr in self.adj:
+            for edge in arr:
+                indegree[edge.target] += 1
+        for i in range(self.v):
+            if indegree[i] == 0:
+                queue.append(i)
+        while queue:
+            current = queue.popleft()
+            for edge in self.adj[current]:
+                indegree[edge.target] -= 1
+                if indegree[edge.target] == 0:
+                    queue.append(edge.target)
+            order_len += 1
+        return order_len == self.v
+
+    def detect_cycle_graph_colouring_directed(self):
+        # WHITE -> Not Visited
+        # GREY -> Visited + Processing
+        # BLACK -> Visited + Processed
+        visited = ['WHITE'] * self.v
+        def dfs(current):
+            visited[current] = 'GREY'
+            for edge in self.adj[current]:
+                if visited[edge.target] == 'GREY':
+                    return True
+                elif visited[edge.target] == 'WHITE' and dfs(edge.target):
+                    return True
+            visited[current] = 'BLACK'
+            return False
+        for i in range(self.v):
+            if visited[i] == 'WHITE' and dfs(i):
+                return True
+        return False    
+
+##########################################################################################
+##########################################################################################
+##### TOPOLOGICAL SORT IN DAG:
 
     def topological_sorting_BFS(self):
         order = []
@@ -69,6 +175,22 @@ class Graph:
             print('Done!')
         return order
 
+    def topological_sorting_DFS(self):
+        visited = [False] * self.v
+        stack = []
+        def dfs(current):
+            visited[current] = True
+            for edge in self.adj[current]:
+                if not visited[edge.target]:
+                    dfs(edge.target)
+            stack.append(current)
+        for i in range(self.v):
+            if not visited[i]:
+                dfs(i)
+        if len(stack) != self.v:
+            print('The given graph is not a Directed Acyclic Graph (DAG)')
+        return stack[::-1]
+
     def select_mid_weight_node(self, values: List[int], finalized: List[bool]):
         min_weight = float('inf')
         node = 0
@@ -77,6 +199,10 @@ class Graph:
                 min_weight = values[j]
                 node = j
         return node
+
+##########################################################################################
+##########################################################################################
+##### GRAPH MST(MinimumSpanningTree) ALGORITHMS: 
 
     def prims_algorithm(self):
         node_weights = [float('inf')] * self.v
@@ -136,6 +262,10 @@ class Graph:
             edge_weight += mst_edge.weight
         return edge_weight
 
+##########################################################################################
+##########################################################################################
+##### GRAPH SPT(ShortestPathTree) ALGORITHMS: 
+
     def dijkstras_algorithm(self, start: int):
         node_weights = [float('inf')] * self.v
         finalized = [False] * self.v
@@ -159,6 +289,10 @@ class Graph:
                 print('Negative Edge Weight Cycle Detected!')
                 break
         return node_weights
+
+##########################################################################################
+##########################################################################################
+##### GRAPH BRIDGES AND ARTICULATION POINTS:
 
     def discovery_times(self):
         discovery_times = [float('inf')] * self.v
