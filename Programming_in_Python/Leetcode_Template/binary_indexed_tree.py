@@ -1,32 +1,53 @@
 from typing import List
 
-
 class BinaryIndexedTree:
 
     @staticmethod
-    def get_next_index(index: int) -> int:
+    def get_next_index(index) -> int:
         return index + (index & -index)
 
     @staticmethod
-    def get_parent_index(index: int) -> int:
+    def get_parent_index(index) -> int:
         return index - (index & -index)
 
-    def update_tree(self, bit_tree: List[int], index: int, diff: int):
-        while index < len(bit_tree):
-            bit_tree[index] += diff
+    def __init__(self, nums):
+        self.n = len(nums)
+        self.bit = [0] * (self.n+1)
+        for i in range(1, self.n + 1):
+            self.point_update_query(i, nums[i - 1])
+
+    def point_update_query(self, index, diff):
+        while index < len(self.bit):
+            self.bit[index] += diff
             index = self.get_next_index(index)
 
-    def build_tree(self, input_list: List[int]) -> List[int]:
-        n = len(input_list)
-        bit_tree = [0] * (n + 1)
-        for i in range(1, n + 1):
-            self.update_tree(bit_tree, i, input_list[i - 1])
-        return bit_tree
-
-    def get_sum(self, bit_tree: List[int], index: int) -> int:
+    def range_sum_query_util(self, index):
         index += 1
         ans = 0
         while index > 0:
-            ans += bit_tree[index]
+            ans += self.bit[index]
             index = self.get_parent_index(index)
         return ans
+
+    def range_sum_query(self, left: int, right: int):
+        left = self.range_sum_query_util(left-1) if left > 0 else 0
+        right = self.range_sum_query_util(right)
+        return right - left
+
+    
+bit = BinaryIndexedTree([1,2,3,4,5,6,7,8,9,10])
+print(bit.range_sum_query_util(9))
+print(bit.range_sum_query_util(8))
+print(bit.range_sum_query_util(7))
+print(bit.range_sum_query_util(6))
+print(bit.range_sum_query_util(5))
+print(bit.range_sum_query_util(4))
+print(bit.range_sum_query_util(3))
+print(bit.range_sum_query_util(2))
+print(bit.range_sum_query_util(1))
+print(bit.range_sum_query_util(0))
+
+print(bit.range_sum_query(3, 9))
+print(bit.range_sum_query(5, 6))
+print(bit.range_sum_query(0, 6))
+print(bit.range_sum_query(3, 3))
