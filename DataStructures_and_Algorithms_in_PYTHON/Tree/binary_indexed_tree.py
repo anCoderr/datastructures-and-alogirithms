@@ -1,8 +1,19 @@
+##########################################################################################
+##########################################################################################
+##### RESOURCES:
+# https://kartikkukreja.wordpress.com/2013/12/02/range-updates-with-bit-fenwick-tree/
+# https://cp-algorithms.com/data_structures/fenwick.html#range-operations
+# https://www.geeksforgeeks.org/binary-indexed-tree-or-fenwick-tree-2/
+# https://www.geeksforgeeks.org/binary-indexed-tree-range-update-range-queries/
+# https://robert1003.github.io/2020/01/27/fenwick-tree.html
+
+
 def get_next_index(index) -> int:
     return index + (index & -index)
 
 def get_parent_index(index) -> int:
     return index - (index & -index)
+
 
 ##########################################################################################
 ##########################################################################################
@@ -51,6 +62,7 @@ class BIT:
         right = self.range_sum_query_0_to_i(right)
         return right - left
 
+
 ##########################################################################################
 ##########################################################################################
 ##### BIT Class: Supports Point Updates + Range Queries
@@ -80,6 +92,7 @@ class BIT_PointUpdates_RangeQueries:
         right = self.range_sum_query_0_to_i(right)
         return right - left
 
+
 ##########################################################################################
 ##########################################################################################
 ##### BIT Class: Supports Range Updates + Point Queries
@@ -107,6 +120,7 @@ class BIT_RangeUpdates_PointQueries:
             sum += self.bit[index]
             index -= (index & -index)
         return sum
+
 
 ##########################################################################################
 ##########################################################################################
@@ -153,6 +167,8 @@ class BIT_RangeUpdates_RangeQueries:
 ##########################################################################################
 ##########################################################################################
 ##### BIT Implementation Testing.
+
+
 print('POINT UPDATES AND RANGE QUERIES:')    
 bit = BIT_PointUpdates_RangeQueries([5,3,6,0,1,2,3,4,7,9])
 print(bit.range_sum_query_0_to_i(9))
@@ -171,6 +187,7 @@ print(bit.range_sum_query_l_to_r(2, 2))
 print(bit.range_sum_query_l_to_r(5, 5))
 print(bit.range_sum_query_l_to_r(8, 8))
 
+
 print('RANGE UPDATES AND POINT QUERIES:')
 bit = BIT_RangeUpdates_PointQueries([5,3,6,0,1,2,3,4,7,9])
 print(bit.point_sum_query(9))
@@ -180,6 +197,7 @@ bit.range_update_query(2, 5, 9)
 print(bit.point_sum_query(8))
 print(bit.point_sum_query(5))
 print(bit.point_sum_query(2))
+
 
 print('RANGE UPDATES AND RANGE QUERIES:')
 bit = BIT_RangeUpdates_RangeQueries([5,3,6,0,1,2,3,4,7,9])
@@ -194,6 +212,7 @@ print(bit.range_sum_query_0_to_i(6))
 print(bit.range_sum_query_l_to_r(2,8))
 print(bit.range_sum_query_l_to_r(5,6))
 print(bit.range_sum_query_l_to_r(5,5))
+
 
 print('RANGE/POINT UPDATES AND RANGE/POINT QUERIES:')
 bit = BIT([1,2,3,4,5,6,7,8,9,10])
