@@ -157,5 +157,3 @@ print(st.range_max_query(3, 11))
 print(st.range_max_query(7, 7))
 print(st.range_max_query(2, 4))
 print(st.range_max_query(13, 15))
-
-
