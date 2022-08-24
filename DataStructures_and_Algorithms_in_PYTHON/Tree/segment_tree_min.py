@@ -157,4 +157,3 @@ print(st.range_min_query(3, 11))
 print(st.range_min_query(7, 7))
 print(st.range_min_query(2, 4))
 print(st.range_min_query(13, 15))
-

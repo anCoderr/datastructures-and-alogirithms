@@ -161,8 +161,3 @@ print(st.range_sum_query(0,15))
 print(st.range_sum_query(3,3))
 print(st.range_sum_query(5,11))
 print(st.range_sum_query(12,15))
-
-
-
-
-
