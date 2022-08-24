@@ -86,8 +86,7 @@ class AVL_Tree(object):
         if current is None:
             return current
 
-        current.height = 1 + \
-            max(self.get_height(current.left), self.get_height(current.right))
+        current.height = 1 + max(self.get_height(current.left), self.get_height(current.right))
 
         balance_factor = self.get_balance(current)
 
