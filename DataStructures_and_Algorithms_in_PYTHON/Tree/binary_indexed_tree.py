@@ -6,6 +6,7 @@
 # https://www.geeksforgeeks.org/binary-indexed-tree-or-fenwick-tree-2/
 # https://www.geeksforgeeks.org/binary-indexed-tree-range-update-range-queries/
 # https://robert1003.github.io/2020/01/27/fenwick-tree.html
+# https://www.youtube.com/watch?v=DPiY9wFxGIw&t=15s
 
 
 def get_next_index(index) -> int:
