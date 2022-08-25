@@ -5,7 +5,6 @@
 # https://github.com/TheAlgorithms/Python/blob/master/data_structures/binary_tree/avl_tree.py
 # https://www.youtube.com/watch?v=jDM6_TnYIqE
 
-
 class TreeNode:
     def __init__(self, val):
         self.val = val
@@ -104,6 +103,16 @@ class AVL_Tree(object):
                 return self.left_rotation_operation(current)
         return current
 
+    def search(self, key):
+        def traverse(current):
+            if not current or current.val == key: 
+                return current
+            elif current.val < key:
+                return traverse(current.right)
+            else:
+                return traverse(current.left)
+        return traverse(self.root)
+
     def get_smallest_node(self, current):
         if current is None or current.left is None:
             return current
@@ -112,26 +121,20 @@ class AVL_Tree(object):
     def left_rotation_operation(self, A):
         B = A.right
         Bl = B.left
-        # Perform rotation
-        B.left = A
-        A.right = Bl
-        # Update heights
-        A.height = 1 + max(self.get_height(A.left), self.get_height(A.right))
-        B.height = 1 + max(self.get_height(B.left), self.get_height(B.right))
-        # Return the new root
-        return B
+        B.left = A   # Perform rotation
+        A.right = Bl # Perform rotation
+        A.height = 1 + max(self.get_height(A.left), self.get_height(A.right)) # Update heights
+        B.height = 1 + max(self.get_height(B.left), self.get_height(B.right)) # Update heights
+        return B # Return the new root
 
     def right_rotation_operation(self, A):
         B = A.left
         Br = B.right
-        # Perform rotation
-        B.right = A
-        A.left = Br
-        # Update heights
-        A.height = 1 + max(self.get_height(A.left), self.get_height(A.right))
-        B.height = 1 + max(self.get_height(B.left), self.get_height(B.right))
-        # Return the new root
-        return B
+        B.right = A # Perform rotation
+        A.left = Br # Perform rotation
+        A.height = 1 + max(self.get_height(A.left), self.get_height(A.right)) # Update heights
+        B.height = 1 + max(self.get_height(B.left), self.get_height(B.right)) # Update heights
+        return B # Return the new root
 
     def get_height(self, current):
         if not current:
